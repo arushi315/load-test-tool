@@ -43,7 +43,7 @@ public class NamedPipeLoadExecutor {
     private Vertx vertx;
     @Autowired
     private TestStatus testStatus;
-    @Autowired
+    @Autowired(required = false)
     private List<Map<String, String>> testData;
 
     @PostConstruct
@@ -75,6 +75,7 @@ public class NamedPipeLoadExecutor {
     }
 
     private void readFromPipe(final NamedPipeReader pipe) {
+        require(testData != null, "CSV file containing \"User\" variables not provided.");
         int random = (int) (Math.random() * testData.size());
         Map<String, String> data = testData.get(random);
         KerberosRequest kerberosRequest = new KerberosRequest()

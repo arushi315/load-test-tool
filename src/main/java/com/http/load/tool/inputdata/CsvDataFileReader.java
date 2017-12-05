@@ -29,26 +29,28 @@ public class CsvDataFileReader {
 
     @Bean
     public List<Map<String, String>> createDevices() throws IOException {
-
+        List<Map<String, String>> data = null;
         List<List<String>> csvData = readRecords();
-        List<String> parametersNames = csvData.stream().findFirst().get();
-        List<Map<String, String>> data = csvData.stream()
-                .skip(1)
-                .map(attributes -> {
-                    Map<String, String> parameters = new HashMap<>();
-                    int index = 0;
-                    for (String name : parametersNames) {
-                        parameters.put(name.trim(), attributes.get(index));
-                        index++;
-                    }
-                    return parameters;
-                })
-                .collect(Collectors.toList());
+        if (csvData != null) {
+            List<String> parametersNames = csvData.stream().findFirst().get();
+            data = csvData.stream()
+                    .skip(1)
+                    .map(attributes -> {
+                        Map<String, String> parameters = new HashMap<>();
+                        int index = 0;
+                        for (String name : parametersNames) {
+                            parameters.put(name.trim(), attributes.get(index));
+                            index++;
+                        }
+                        return parameters;
+                    })
+                    .collect(Collectors.toList());
+        }
         return data;
     }
 
     private List<List<String>> readRecords() throws IOException {
-        List<List<String>> data;
+        List<List<String>> data = null;
         if (!dataFilePaths.stream().anyMatch(StringUtils::isEmpty)) {
             data = readFromExternalDataFile(dataFilePaths.get(0));
             if (dataFilePaths.size() > 1) {
@@ -68,7 +70,6 @@ public class CsvDataFileReader {
         } else {
             // Most cases we won't execute this flow. This is for people to be able to define a default behavior.
             System.out.println("No external data file provided - assuming that load test will be executed with static parameters.");
-            data = getDataFromDefaultFile("input-data-file.csv");
         }
         return data;
     }

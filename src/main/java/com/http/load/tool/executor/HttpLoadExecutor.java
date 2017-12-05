@@ -46,7 +46,7 @@ public class HttpLoadExecutor {
     private TestInput testInput;
     @Autowired
     private HttpClientPool httpClientPool;
-    @Autowired
+    @Autowired(required = false)
     private List<Map<String, String>> testData;
     private long timerId = -1L;
 
@@ -191,12 +191,15 @@ public class HttpLoadExecutor {
     }
 
     private String toQueryParams(final RemoteOperation remoteOperation) {
-        int random = (int) (Math.random() * testData.size());
-        Map<String, String> data = testData.get(random);
-        List<Parameter> parameters = remoteOperation.getParameters();
-        String query = toQuery(data, parameters);
-        if (!isEmpty(testInput.getHttpLoadInput().getCommonParameters())) {
-            query += "&" + toQuery(data, testInput.getHttpLoadInput().getCommonParameters());
+        String query = "";
+        if (testData != null) {
+            int random = (int) (Math.random() * testData.size());
+            Map<String, String> data = testData.get(random);
+            List<Parameter> parameters = remoteOperation.getParameters();
+            query = toQuery(data, parameters);
+            if (!isEmpty(testInput.getHttpLoadInput().getCommonParameters())) {
+                query += "&" + toQuery(data, testInput.getHttpLoadInput().getCommonParameters());
+            }
         }
         return query;
     }
