@@ -61,6 +61,7 @@ public class NamedPipeLoadExecutor {
     }
 
     void startTest() {
+        // Since we don't handle backpressure, we need to split the load into 4th of a second.
         vertx.setPeriodic(250, doNothing -> {
             for (int index = 0; index < config.getRequestsPerSecond() / 4; index++) {
                 NamedPipeReader pipe = findAvailablePipe();
