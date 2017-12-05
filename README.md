@@ -104,3 +104,5 @@ Given below sample Kerberos config JSON.
                     	}
                     ]
                 }
+                
+See ![Sample CSV file for HTTP load test input](src/main/resources/http-load-input-query-parameters.csv?raw=true "Title")
