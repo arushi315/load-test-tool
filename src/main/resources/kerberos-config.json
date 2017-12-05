@@ -1,0 +1,11 @@
+{
+  "pipeNames":[
+    "sample-1",
+    "sample-2"
+  ],
+  "durationInSeconds":10,
+  "requestsPerSecond":5,
+  "principle":"some_principle",
+  "password":"some_password",
+  "spn":"some_spn"
+}
