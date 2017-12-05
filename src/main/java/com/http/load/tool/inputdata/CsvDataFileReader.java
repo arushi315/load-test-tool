@@ -67,7 +67,7 @@ public class CsvDataFileReader {
             }
         } else {
             // Most cases we won't execute this flow. This is for people to be able to define a default behavior.
-            System.out.println("No external data file provided, reading the default file \"input-data-file.csv\"");
+            System.out.println("No external data file provided - assuming that load test will be executed with static parameters.");
             data = getDataFromDefaultFile("input-data-file.csv");
         }
         return data;
