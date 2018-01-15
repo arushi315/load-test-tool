@@ -10,20 +10,19 @@ import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.core.buffer.Buffer;
 import io.vertx.rxjava.ext.web.client.HttpRequest;
 import io.vertx.rxjava.ext.web.client.HttpResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.stereotype.Component;
-import rx.Single;
-
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javax.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Conditional;
+import org.springframework.stereotype.Component;
+import rx.Single;
 
 import static com.http.load.tool.constants.LoadTestType.REQUEST_PER_SECOND;
 import static org.springframework.util.CollectionUtils.isEmpty;
@@ -137,6 +136,10 @@ public class HttpLoadExecutor {
         final long requestSentTime = System.currentTimeMillis();
 
         HttpRequest<Buffer> clientRequest = httpClientPool.request(remoteHost, remotePath, remoteOperation.getHttpMethod());
+        String userAgent = getUserAgentHeader();
+        if (userAgent != null) {
+            clientRequest.headers().set("User-Agent", userAgent);
+        }
         Single<HttpResponse<Buffer>> responseSingle;
         if (remoteOperation.getRequestBuffer() != null) {
             responseSingle = clientRequest.rxSendBuffer(remoteOperation.getRequestBuffer());
@@ -188,6 +191,15 @@ public class HttpLoadExecutor {
     private String getRemoteHost() {
         int random = (int) (Math.random() * testInput.getHttpLoadInput().getRemoteHosts().size());
         return testInput.getHttpLoadInput().getRemoteHosts().get(random);
+    }
+
+    private String getUserAgentHeader() {
+        String userAgent = null;
+        if (testInput.getHttpLoadInput().getUserAgentHeaders() != null) {
+            int random = (int) (Math.random() * testInput.getHttpLoadInput().getUserAgentHeaders().size());
+            userAgent = testInput.getHttpLoadInput().getUserAgentHeaders().get(random);
+        }
+        return userAgent;
     }
 
     private String toQueryParams(final RemoteOperation remoteOperation) {

@@ -69,6 +69,13 @@ Given below sample Kerberos config JSON.
                 			"value" : "###"
                 		}
                 	],
+                	"userAgentHeaders" : [
+                        "Apple-iPod5C1-1104.1111",
+                        "Apple-iPod5C1-1104.2222",
+                        "Apple-iPod5C1-1104.3333",
+                        "Apple-iPod5C1-1104.4444",
+                        "Apple-iPod5C1-1104.5555"
+                    ],
                     "remoteOperations" : [
                     	{
                     		"httpMethod" : "OPTIONS",

@@ -1,7 +1,6 @@
 package com.http.load.tool.dataobjects;
 
 import com.http.load.tool.constants.LoadTestType;
-
 import java.util.List;
 
 /**
@@ -11,6 +10,8 @@ public class HttpLoadInput {
 
     private List<RemoteOperation> remoteOperations;
     private List<Parameter> commonParameters;
+    private List<String> userAgentHeaders;
+
     private Long durationInSeconds;
     private int maxOpenConnections;
 
@@ -169,11 +170,21 @@ public class HttpLoadInput {
         return this;
     }
 
+    public List<String> getUserAgentHeaders() {
+        return userAgentHeaders;
+    }
+
+    public HttpLoadInput setUserAgentHeaders(final List<String> userAgentHeaders) {
+        this.userAgentHeaders = userAgentHeaders;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "HttpLoadInput{" +
                 "remoteOperations=" + remoteOperations +
                 ", commonParameters=" + commonParameters +
+                ", userAgentHeaders=" + userAgentHeaders +
                 ", durationInSeconds=" + durationInSeconds +
                 ", maxOpenConnections=" + maxOpenConnections +
                 ", path='" + path + '\'' +
